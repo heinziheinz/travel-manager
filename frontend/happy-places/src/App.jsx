@@ -1,15 +1,16 @@
-import { useState } from 'react'
-
-import './App.css'
+import { useState } from "react";
+import { SearchBar } from "./components/SearchBar/SearchBar";
+import { SearchBarButton } from "./components/SearchBarButton/SearchBarButton";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      hallo Super locations
+      <SearchBar />
+      <SearchBarButton />
+      hallo USER!
     </>
-  )
+  );
 }
 
-export default App
+export default App;
