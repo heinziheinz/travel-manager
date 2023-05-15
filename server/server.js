@@ -4,6 +4,8 @@ import cors from "cors";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import User from "./model/Users.js"
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 const app = express();
 
@@ -12,16 +14,7 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 
 mongoose.connect("mongodb+srv://heinz:kDtQbxdGQ1rHAyIX@cluster0.0owglf4.mongodb.net/tripCollection");
-// mongoose.connect("mongodb+srv://heinz:kDtQbxdGQ1rHAyIX@cluster0.0owglf4.mongodb.net/myTestCollection");
 
-
-
-// const user = new User({
-//     username: 'Franz!',
-//     email: 'awesome-post',
-//     password: 'awesome-post',
-// });
-// user.save()
 
 app.post("/register", async (req, res) => {
     const user = req.body;
@@ -43,7 +36,7 @@ app.post("/register", async (req, res) => {
     }
 
 });
-process.env.JWT_SECRET = "1e57a452a094728c291bc42bf2bc7eb8d9fd8844d1369da2bf728588b46c4e75";
+
 
 app.post("/login", (req, res) => {
     const userLoggingIn = req.body;
