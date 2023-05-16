@@ -1,6 +1,7 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import fetch from "./../utilities/fetch";
 const SearchLocations = (props) => {
+    const [name, setName] = useState("")
     useEffect(() => {
         (async () => {
             try {
@@ -10,11 +11,17 @@ const SearchLocations = (props) => {
 
                 });
                 console.log(response)
+                setName(response.username)
             } catch (err) {
                 console.log(err)
             }
         })();
     }, []);
-    return <p>Search Locations</p>
+    if (name.length > 0) {
+        return <p>{name}</p>
+    } else {
+
+        return <p>Waiting...</p>
+    }
 }
 export default SearchLocations
