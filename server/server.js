@@ -71,7 +71,7 @@ app.post("/login", (req, res) => {
                                 return res.json({
                                     message: "Success",
                                     token: "Bearer " + token
-                                })
+                                });
                             }
                         )
                     } else {
@@ -127,7 +127,16 @@ app.get("/get-user-name", verifyJWT, (req, res) => {
     console.log("req.user")
     console.log(req.user)
     res.json({ isLoggedIn: true, username: req.user.username })
-})
+});
+
+app.get('/delete-cookie', verifyJWT, (req, res) => {
+
+    res.clearCookie('session');
+    return res.json({
+        message: "cookie deleted"
+    });
+
+});
 
 const port = 9002;
 app.listen(port, _ => console.log(`http://127.0.0.1:${port}`));
