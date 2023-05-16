@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import User from "./model/Users.js"
 import * as dotenv from 'dotenv'
+import cookieParser from "cookie-parser";
 dotenv.config()
 
 const app = express();
@@ -12,8 +13,10 @@ const app = express();
 app.use(express.json());
 app.use(cors())
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+// app.use(express.cookieParser());
 
-mongoose.connect("mongodb+srv://heinz:kDtQbxdGQ1rHAyIX@cluster0.0owglf4.mongodb.net/tripCollection");
+mongoose.connect(process.env.MONGO_CONNECTION);
 
 
 app.post("/register", async (req, res) => {
@@ -44,6 +47,7 @@ app.post("/login", (req, res) => {
     User.findOne({ username: userLoggingIn.username })
         .then(dbUser => {
             if (!dbUser) {
+                console.log("FALSCH")
                 return res.json({ message: "Invalid Username or Password" });
             }
             bcrypt.compare(userLoggingIn.password, dbUser.password)
@@ -57,11 +61,13 @@ app.post("/login", (req, res) => {
                         jwt.sign(
                             payload,
                             process.env.JWT_SECRET,
-                            { expiresIn: 86400 },
+                            { expiresIn: 60 },
                             (err, token) => {
                                 console.log("err", err)
                                 console.log("secret", process.env.JWT_SECRET)
                                 if (err) return res.json({ message: "err" });
+
+                                res.cookie('session', "Bearer " + token, { domain: "127.0.0.1" })
                                 return res.json({
                                     message: "Success",
                                     token: "Bearer " + token
@@ -78,9 +84,13 @@ app.post("/login", (req, res) => {
 });
 
 function verifyJWT(req, res, next) {
-    const token = req.headers["x-access-token"]?.split(' ')[1];
+    // const token = req.headers["x-access-token"]?.split(' ')[1];
+    const token = req.cookies.session?.split(' ')[1];
+
+    // var cookie = req.cookies.cookieName;
+    console.log(req.cookies.session)
     if (token) {
-        jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
+        jwt.verify(token, process.env.JWT_SECRET, { clockTolerance: 0 }, (err, decode) => {
             if (err) {
                 return res.json({
                     isLoggedIn: false,
@@ -90,8 +100,23 @@ function verifyJWT(req, res, next) {
             req.user = {};
             req.user.id = decode.id;
             req.user.username = decode.username;
+            const payload = {
+                id: decode.id,
+                username: decode.username
+            }
+
+            jwt.sign(
+                payload,
+                process.env.JWT_SECRET,
+                { expiresIn: 60 },
+                (err, newtoken) => {
+                    if (err) return res.json({ message: "err" });
+                    res.cookie('session', "Bearer " + newtoken, { domain: "127.0.0.1" });
+                    next();
+                }
+            )
         })
-        next();
+        // next();
     } else {
         res.json({ message: "Incorrect token", isLoggedIn: false })
     }
