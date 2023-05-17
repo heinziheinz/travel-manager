@@ -4,3 +4,13 @@
   padding: 2rem;
   text-align: center;
 }
+
+.SearchBar {
+  width: 22em;
+  height: 2em;
+}
+
+.SearchBarButton {
+  width: 5em;
+  height: 2em;
+}
