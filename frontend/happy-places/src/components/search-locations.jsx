@@ -14,6 +14,7 @@ const SearchLocations = (props) => {
 
                 });
                 console.log(response)
+                // TODO: front and backend same message: loged in
                 setName(response.username)
             } catch (err) {
                 console.log(err)
