@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Form from "./../components/form";
 import { useNavigate } from "react-router-dom";
+import fetch from "./../utilities/fetch";
 
 const Register = (props) => {
     const navigate = useNavigate();
@@ -47,6 +48,8 @@ const Register = (props) => {
             try {
                 const response = await fetch(import.meta.env.VITE_URL + "register", options)
                 const users = await response.json();
+                console.log("users in register")
+                console.log(users)
                 console.log(users.message === "Email has already been taken")
                 if (users.message === "Email has already been taken") {
                     setSubmitted(false)
@@ -58,8 +61,9 @@ const Register = (props) => {
                         password: ""
                     });
                     setTimeout(() => {
+                        console.log("Timeout")
                         navigate("/")
-                    }, 3000)
+                    }, 4000)
                 }
             } catch (err) {
                 console.log(err)
