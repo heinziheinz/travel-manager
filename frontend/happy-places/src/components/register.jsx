@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Form from "./../components/form";
 import { useNavigate } from "react-router-dom";
-import fetch from "./../utilities/fetch";
+import myFetch from "./../utilities/fetch";
 
 const Register = (props) => {
     const navigate = useNavigate();
@@ -46,10 +46,7 @@ const Register = (props) => {
         };
         (async () => {
             try {
-                const response = await fetch(import.meta.env.VITE_URL + "register", options)
-                const users = await response.json();
-                console.log("users in register")
-                console.log(users)
+                const users = await myFetch(import.meta.env.VITE_URL + "register", options);
                 console.log(users.message === "Email has already been taken")
                 if (users.message === "Email has already been taken") {
                     setSubmitted(false)

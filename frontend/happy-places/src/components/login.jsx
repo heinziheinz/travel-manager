@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import fetch from "./../utilities/fetch";
+import myFetch from "./../utilities/fetch";
 import Form from "./../components/form";
 import { useNavigate } from "react-router-dom";
 
@@ -46,8 +46,7 @@ const Login = (props) => {
         };
         (async () => {
             try {
-                const data = await fetch(import.meta.env.VITE_URL + "login", options)
-                console.log(data)
+                const data = await myFetch(import.meta.env.VITE_URL + "login", options)
                 console.log(data.message === "Success")
                 if (data.message === "Success") {
                     navigate("/search-location")
