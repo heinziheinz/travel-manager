@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import fetch from "./../utilities/fetch";
+import { LogginInContext } from "./../App";
+
 const SearchLocations = (props) => {
     const [name, setName] = useState("")
+    const { loggedIn, setLoggedIn } = useContext(LogginInContext);
     useEffect(() => {
         (async () => {
             try {

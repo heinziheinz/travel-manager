@@ -1,10 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import myFetch from "./../utilities/fetch";
 import Form from "./../components/form";
 import { useNavigate } from "react-router-dom";
+import { LogginInContext } from "./../App";
 
 const Login = (props) => {
     const navigate = useNavigate();
+    const { loggedIn, setLoggedIn } = useContext(LogginInContext);
+    console.log(loggedIn)
+    console.log(setLoggedIn)
     const inputValues = {
         username: "",
         email: "",
@@ -50,6 +54,7 @@ const Login = (props) => {
                 console.log(data.message === "Success")
                 if (data.message === "Success") {
                     navigate("/search-location")
+                    setLoggedIn(true);
                 }
             } catch (err) {
                 console.log(err)
@@ -65,25 +70,6 @@ const Login = (props) => {
 
     return (
         <Form handleSubmit={handleSubmit} inputFields={inputFields} onChangeHandler={onChangeHandler} />
-        // <form onSubmit={handleSubmit}>
-        //     {
-        //         inputFields.map((fields, index) => {
-        //             return (
-        //                 < InputField
-        //                     key={index}
-        //                     name={fields.name}
-        //                     className={fields.className}
-        //                     label={fields.label}
-        //                     type={fields.type}
-        //                     placeholder={fields.placeholder}
-        //                     onChangeHandler={onChangeHandler}
-        //                     value={fields.value}
-        //                 />
-        //             );
-        //         })
-        //     }
-        //     <SubmitButton value={"Submit"} />
-        // </form>
     );
 }
 export default Login
