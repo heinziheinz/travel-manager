@@ -9,6 +9,7 @@ function App() {
       <AppContext />
     </ LogginInContext.Provider>
   )
+
 }
 
-export default App
+export default App;
