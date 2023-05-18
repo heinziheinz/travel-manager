@@ -2,6 +2,14 @@ import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
 const locationSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    adresse: {
+        type: String,
+        required: true
+    },
     images: {
         type: String,
         required: true
@@ -10,14 +18,22 @@ const locationSchema = new Schema({
         type: String,
         required: true
     },
-    caption2: {
+    trickUser: {
         type: String,
         required: true
     },
     foreignKey: {
         type: String,
         required: true
-    }
+    },
+    createdAt: {
+        type: Date,
+        required: true
+    },
+    updatedAt: {
+        type: Date,
+        required: true
+    },
 }, { timestamps: true });
 
 
